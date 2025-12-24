@@ -14,41 +14,46 @@
         </div>
         <?php endif; ?>
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered table-hover" id="tabelbarang" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>No.</th>
-                            <th>Barcode</th>
-                            <th>Nama Barang</th>
-                            <th>Kategori</th>
-                            <th>Satuan</th>
-                            <th>Stok</th>
-                            <th>Harga Jual</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                            $no = 1;
-                        foreach ($barang as $b) {?>
-                                <tr>
-                                    <td><?php echo $no++;?></td>
-                                    <td><?php echo $b->barcode;?></td>
-                                    <td><?php echo $b->name;?></td>
-                                    <td><?php echo $b->nama_kategori;?></td>
-                                    <td><?php echo $b->nama_satuan;?></td>
-                                    <td><?php echo $b->stok;?></td>
-                                    <td><?php echo number_format($b->harga_jual, 0, ',', '.');?></td>
-                                    <td>
-                                        <a href="<?php echo base_url('barang/getedit/' . $b->id);?>" class="btn btn-sm btn-info"><i class="fas fa-edit"></i> Edit</a>
-                                        <a href="<?php echo base_url('barang/delete/' . $b->id);?>" class="btn btn-sm btn-danger" onclick="return confirm('Hapus barang ini?');"><i class="fas fa-trash"></i> Hapus</a>
-                                    </td>
-                                </tr>
-                        <?php }?>
-                    </tbody>
-                </table>
-            </div>
+           <div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover" id="tabelkelas" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Barkode</th>
+                <th>Name</th>
+                <th>Satuan</th>
+                <th>Kategori</th>
+                <th>Stok</th>
+                <th>Harga beli</th>
+                <th>Harga Jual</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+                $no = 1;
+                foreach ($barang as $barang) {
+                    echo "<tr>
+                <td>$no</td>
+                <td>$barang->barcode</td>
+                <td>$barang->name</td>
+                <td>$barang->satuan</td>
+                <td>$barang->kategori</td>
+                <td>$barang->stok</td>
+                <td>$barang->harga_beli</td>
+                <td>$barang->harga_jual</td>
+                <td>
+                    <div>
+                        <a href='" . base_url('barang/getedit/' . $barang->id) . "' class='btn btn-sm btn-info'><i class='fas fa-edit'></i> Edit</a>
+                        <a href='" . base_url('barang/delete/' . $barang->id) . "' class='btn btn-sm btn-danger' onclick='return confirm(\"Ingin menghapus data user ini?\");'><i class='fas fa-trash'></i> Hapus</a>
+                    </div>
+                </td>
+            </tr>";
+                    $no++;
+            }?>
+        </tbody>
+    </table>
+</div>
         </div>
     </div>
 </div>

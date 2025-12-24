@@ -8,6 +8,7 @@
     <title>Login | Digisat</title>
     <link rel="stylesheet" href="<?php echo base_url('assets/css/styles.css') ?>" rel="stylesheet" type="text/css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+            <link rel="icon" type="image/png" href="<?php echo base_url('assets/img/favicon2.PNG') ?>">
 </head>
 
 <body class="bg-primary">

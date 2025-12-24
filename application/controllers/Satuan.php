@@ -38,29 +38,49 @@ class Satuan extends CI_Controller
         redirect('satuan');
     }
 
-    public function getedit($id)
+    public function getedit($id = null)
     {
+        if (! isset($id)) {
+            redirect('satuan');
+        }
+
+        $satuan = $this->Satuan_model->getById($id);
+        if (! $satuan) {
+            show_404();
+        }
+
         $data = [
             'title'   => 'Edit Satuan',
-            'satuan'  => $this->Satuan_model->getById($id),
-            'content' => 'satuan/edit_form',
+            'satuan'  => $satuan,
+            'content' => 'satuan/edit_form', // Mengarahkan isi konten ke form edit
         ];
+
+        // Panggil template utama agar Bootstrap tetap tampil
         $this->load->view('template/main', $data);
     }
 
     public function edit()
     {
+        // 1. Meminta Model untuk menjalankan query UPDATE di database
         $this->Satuan_model->editData();
+
+        // 2. Mengecek apakah ada baris data yang berubah di database
         if ($this->db->affected_rows() > 0) {
             $this->session->set_flashdata("success", "Data satuan berhasil diupdate");
         }
+
+        // 3. Melempar kembali pengguna ke halaman daftar satuan (index)
         redirect('satuan');
     }
-
-    public function delete($id)
+    public function delete($id = null)
     {
-        $this->Satuan_model->delete($id);
-        $this->session->set_flashdata("success", "Data satuan berhasil dihapus");
-        redirect('satuan');
+        if (! isset($id)) {
+            show_404();
+        }
+
+        if ($this->Satuan_model->delete($id)) {
+            $this->session->set_flashdata('success', 'Berhasil dihapus');
+            redirect(site_url('satuan'));
+        }
     }
 }

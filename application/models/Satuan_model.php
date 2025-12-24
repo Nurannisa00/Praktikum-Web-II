@@ -1,24 +1,12 @@
 <?php
-defined('BASEPATH') or exit('No direct script access allowed');
-
 class Satuan_model extends CI_Model
 {
-    protected $_table  = 'satuan';
-    protected $primary = 'id';
+
+    private $_table = "satuan"; // Nama tabel di database
 
     public function getAll()
     {
         return $this->db->get($this->_table)->result();
-    }
-
-    public function save()
-    {
-        $data = [
-            'name'      => htmlspecialchars($this->input->post('name'), true),
-            'deskripsi' => htmlspecialchars($this->input->post('deskripsi'), true),
-        ];
-
-        return $this->db->insert($this->_table, $data);
     }
 
     public function getById($id)
@@ -26,19 +14,30 @@ class Satuan_model extends CI_Model
         return $this->db->get_where($this->_table, ["id" => $id])->row();
     }
 
-    public function editData()
+    public function save()
     {
-        $id   = $this->input->post('id');
+        $post = $this->input->post();
         $data = [
-            'name'      => htmlspecialchars($this->input->post('name'), true),
-            'deskripsi' => htmlspecialchars($this->input->post('deskripsi'), true),
+            'name'      => $post["name"],
+            'deskripsi' => $post["deskripsi"],
         ];
-
-        return $this->db->where($this->primary, $id)->update($this->_table, $data);
+        return $this->db->insert($this->_table, $data);
     }
 
     public function delete($id)
     {
-        return $this->db->where($this->primary, $id)->delete($this->_table);
+        return $this->db->delete($this->_table, ["id" => $id]);
+    }
+
+    public function editData()
+    {
+        $post = $this->input->post();
+        $data = [
+            'name'      => $post["name"],      // Mengambil input dari name="name"
+            'deskripsi' => $post["deskripsi"], // Mengambil input dari name="deskripsi"
+        ];
+
+        // Melakukan update data berdasarkan ID yang dikirim secara hidden
+        return $this->db->update('satuan', $data, ['id' => $post['id']]);
     }
 }

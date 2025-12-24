@@ -7,7 +7,6 @@ class Supplier extends CI_Controller
     {
         parent::__construct();
         $this->load->model("Supplier_model");
-        $this->load->library('form_validation');
     }
 
     public function index()
@@ -33,16 +32,21 @@ class Supplier extends CI_Controller
     {
         $this->Supplier_model->save();
         if ($this->db->affected_rows() > 0) {
-            $this->session->set_flashdata("success", "Data supplier berhasil disimpan");
+            $this->session->set_flashdata("success", "Data Supplier berhasil disimpan! yey");
         }
         redirect('supplier');
     }
 
     public function getedit($id)
     {
+        $supplier = $this->Supplier_model->getById($id);
+        if (! $supplier) {
+            show_404();
+        }
+
         $data = [
             'title'    => 'Edit Supplier',
-            'supplier' => $this->Supplier_model->getById($id),
+            'supplier' => $supplier,
             'content'  => 'supplier/edit_form',
         ];
         $this->load->view('template/main', $data);
@@ -50,17 +54,18 @@ class Supplier extends CI_Controller
 
     public function edit()
     {
-        $this->Supplier_model->editData();
+        $this->Supplier_model->update();
         if ($this->db->affected_rows() > 0) {
-            $this->session->set_flashdata("success", "Data supplier berhasil diupdate");
+            $this->session->set_flashdata("success", "Data Supplier berhasil diedit! yey");
         }
         redirect('supplier');
     }
 
     public function delete($id)
     {
-        $this->Supplier_model->delete($id);
-        $this->session->set_flashdata("success", "Data supplier berhasil dihapus");
-        redirect('supplier');
+        if ($this->Supplier_model->delete($id)) {
+            $this->session->set_flashdata('success', 'Data Supplier berhasil dihapus!');
+            redirect('supplier');
+        }
     }
 }

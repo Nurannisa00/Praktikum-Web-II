@@ -13,7 +13,7 @@ if (! function_exists('infologin')) {
         $ci = &get_instance();
 
         // Mengambil data user dari tabel 'tb_user' berdasarkan 'username' dari sesi
-        return $ci->db->get_where('tb_user', ['username' => $ci->session->userdata('username')])->row_array();
+        return $ci->db->get_where('user', ['username' => $ci->session->userdata('username')])->row_array();
     }
 }
 
@@ -44,7 +44,7 @@ if (! function_exists('cek_user')) {
         $ci = &get_instance();
 
         // Ambil data user yang sedang login
-        $user = $ci->db->get_where('tb_user', ['username' => $ci->session->userdata('username')])->row_array();
+        $user = $ci->db->get_where('user', ['username' => $ci->session->userdata('username')])->row_array();
 
         // Periksa apakah role user adalah 'admin'
         if ($user['role'] == 'admin') {

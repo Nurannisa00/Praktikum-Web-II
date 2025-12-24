@@ -3,25 +3,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Customer_model extends CI_Model
 {
-    protected $_table  = 'customer'; // Sesuai nama tabel di DB
-    protected $primary = 'id';
+    private $_table = "customer";
 
     public function getAll()
     {
         return $this->db->get($this->_table)->result();
-    }
-
-    public function save()
-    {
-        $data = [
-            'nik'    => htmlspecialchars($this->input->post('nik'), true),
-            'name'   => htmlspecialchars($this->input->post('name'), true),
-            'telp'   => htmlspecialchars($this->input->post('telp'), true),
-            'email'  => htmlspecialchars($this->input->post('email'), true),
-            'alamat' => htmlspecialchars($this->input->post('alamat'), true),
-        ];
-
-        return $this->db->insert($this->_table, $data);
     }
 
     public function getById($id)
@@ -29,22 +15,33 @@ class Customer_model extends CI_Model
         return $this->db->get_where($this->_table, ["id" => $id])->row();
     }
 
-    public function editData()
+    public function save()
+    {
+        $data = [
+            'nik'    => $this->input->post('nik'),
+            'name'   => $this->input->post('name'),
+            'telp'   => $this->input->post('telp'),
+            'email'  => $this->input->post('email'),
+            'alamat' => $this->input->post('alamat'),
+        ];
+        return $this->db->insert($this->_table, $data);
+    }
+
+    public function update()
     {
         $id   = $this->input->post('id');
         $data = [
-            'nik'    => htmlspecialchars($this->input->post('nik'), true),
-            'name'   => htmlspecialchars($this->input->post('name'), true),
-            'telp'   => htmlspecialchars($this->input->post('telp'), true),
-            'email'  => htmlspecialchars($this->input->post('email'), true),
-            'alamat' => htmlspecialchars($this->input->post('alamat'), true),
+            'nik'    => $this->input->post('nik'),
+            'name'   => $this->input->post('name'),
+            'telp'   => $this->input->post('telp'),
+            'email'  => $this->input->post('email'),
+            'alamat' => $this->input->post('alamat'),
         ];
-
-        return $this->db->where($this->primary, $id)->update($this->_table, $data);
+        return $this->db->update($this->_table, $data, ['id' => $id]);
     }
 
     public function delete($id)
     {
-        return $this->db->where($this->primary, $id)->delete($this->_table);
+        return $this->db->delete($this->_table, ['id' => $id]);
     }
 }

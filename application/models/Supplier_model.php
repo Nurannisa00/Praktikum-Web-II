@@ -3,29 +3,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Supplier_model extends CI_Model
 {
-    protected $_table  = 'supplier';
-    protected $primary = 'id';
+    private $_table = "supplier";
 
     public function getAll()
     {
         return $this->db->get($this->_table)->result();
-    }
-
-    public function save()
-    {
-        $data = [
-            'nik'            => htmlspecialchars($this->input->post('nik'), true),
-            'name'           => htmlspecialchars($this->input->post('name'), true),
-            'telp'           => htmlspecialchars($this->input->post('telp'), true),
-            'email'          => htmlspecialchars($this->input->post('email'), true),
-            'alamat'         => htmlspecialchars($this->input->post('alamat'), true),
-            'perusahaan'     => htmlspecialchars($this->input->post('perusahaan'), true),
-            'nama_bank'      => htmlspecialchars($this->input->post('nama_bank'), true),
-            'nama_akun_bank' => htmlspecialchars($this->input->post('nama_akun_bank'), true),
-            'no_akun_bank'   => htmlspecialchars($this->input->post('no_akun_bank'), true),
-        ];
-
-        return $this->db->insert($this->_table, $data);
     }
 
     public function getById($id)
@@ -33,26 +15,41 @@ class Supplier_model extends CI_Model
         return $this->db->get_where($this->_table, ["id" => $id])->row();
     }
 
-    public function editData()
+    public function save()
+    {
+        $data = [
+            'nik'            => $this->input->post('nik'),
+            'name'           => $this->input->post('name'), // Ganti dari nama_supplier
+            'perusahaan'     => $this->input->post('perusahaan'),
+            'telp'           => $this->input->post('telp'), // Ganti dari telepon
+            'email'          => $this->input->post('email'),
+            'alamat'         => $this->input->post('alamat'),
+            'nama_bank'      => $this->input->post('nama_bank'),
+            'no_akun_bank'   => $this->input->post('no_akun_bank'),   // Ganti dari no_rekening
+            'nama_akun_bank' => $this->input->post('nama_akun_bank'), // Ganti dari nama_rekening
+        ];
+        return $this->db->insert($this->_table, $data);
+    }
+
+    public function update()
     {
         $id   = $this->input->post('id');
         $data = [
-            'nik'            => htmlspecialchars($this->input->post('nik'), true),
-            'name'           => htmlspecialchars($this->input->post('name'), true),
-            'telp'           => htmlspecialchars($this->input->post('telp'), true),
-            'email'          => htmlspecialchars($this->input->post('email'), true),
-            'alamat'         => htmlspecialchars($this->input->post('alamat'), true),
-            'perusahaan'     => htmlspecialchars($this->input->post('perusahaan'), true),
-            'nama_bank'      => htmlspecialchars($this->input->post('nama_bank'), true),
-            'nama_akun_bank' => htmlspecialchars($this->input->post('nama_akun_bank'), true),
-            'no_akun_bank'   => htmlspecialchars($this->input->post('no_akun_bank'), true),
+            'nik'            => $this->input->post('nik'),
+            'name'           => $this->input->post('name'),
+            'perusahaan'     => $this->input->post('perusahaan'),
+            'telp'           => $this->input->post('telp'),
+            'email'          => $this->input->post('email'),
+            'alamat'         => $this->input->post('alamat'),
+            'nama_bank'      => $this->input->post('nama_bank'),
+            'no_akun_bank'   => $this->input->post('no_akun_bank'),
+            'nama_akun_bank' => $this->input->post('nama_akun_bank'),
         ];
-
-        return $this->db->where($this->primary, $id)->update($this->_table, $data);
+        return $this->db->update($this->_table, $data, ['id' => $id]);
     }
 
     public function delete($id)
     {
-        return $this->db->where($this->primary, $id)->delete($this->_table);
+        return $this->db->delete($this->_table, ['id' => $id]);
     }
 }

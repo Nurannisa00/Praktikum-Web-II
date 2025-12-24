@@ -7,7 +7,6 @@ class Customer extends CI_Controller
     {
         parent::__construct();
         $this->load->model("Customer_model");
-        $this->load->library('form_validation');
     }
 
     public function index()
@@ -32,17 +31,20 @@ class Customer extends CI_Controller
     public function save()
     {
         $this->Customer_model->save();
-        if ($this->db->affected_rows() > 0) {
-            $this->session->set_flashdata("success", "Data customer berhasil disimpan");
-        }
+        $this->session->set_flashdata("success", "Data Customer berhasil disimpan");
         redirect('customer');
     }
 
     public function getedit($id)
     {
+        $customer = $this->Customer_model->getById($id);
+        if (! $customer) {
+            show_404();
+        }
+
         $data = [
             'title'    => 'Edit Customer',
-            'customer' => $this->Customer_model->getById($id),
+            'customer' => $customer,
             'content'  => 'customer/edit_form',
         ];
         $this->load->view('template/main', $data);
@@ -50,17 +52,15 @@ class Customer extends CI_Controller
 
     public function edit()
     {
-        $this->Customer_model->editData();
-        if ($this->db->affected_rows() > 0) {
-            $this->session->set_flashdata("success", "Data customer berhasil diupdate");
-        }
+        $this->Customer_model->update();
+        $this->session->set_flashdata("success", "Data Customer berhasil diupdate");
         redirect('customer');
     }
 
     public function delete($id)
     {
         $this->Customer_model->delete($id);
-        $this->session->set_flashdata("success", "Data customer berhasil dihapus");
+        $this->session->set_flashdata('success', 'Data Customer berhasil dihapus');
         redirect('customer');
     }
 }
